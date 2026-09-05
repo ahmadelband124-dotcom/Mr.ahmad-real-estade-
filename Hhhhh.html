@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mr.ahmad Real Estate</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#222;
+    transition:.3s;
+}
+
+body.dark{
+    background:#121212;
+    color:#fff;
+}
+
+/* NAVBAR */
+nav{
+    background:#fff;
+    padding:16px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.dark nav{
+    background:#1e1e1e;
+}
+
+.logo{
+    color:#1769aa;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.nav-buttons{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.nav-btn,
+.dark-btn{
+    border:0;
+    border-radius:8px;
+    padding:10px 14px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.nav-btn{
+    background:#1769aa;
+    color:white;
+}
+
+.dark-btn{
+    background:#222;
+    color:white;
+}
+
+.user-name{
+    color:#1769aa;
+    font-weight:bold;
+}
+
+/* HERO */
+.hero{
+    min-height:450px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    padding:30px 20px;
+    background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80")
+    center/cover;
+}
+
+.hero-content{
+    width:100%;
+    max-width:800px;
+}
+
+.hero h1{
+    font-size:48px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:19px;
+    margin-bottom:25px;
+}
+
+.search-box{
+    display:flex;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.search-box input{
+    flex:1;
+    border:0;
+    outline:0;
+    padding:16px;
+    font-size:16px;
+}
+
+.search-box button{
+    border:0;
+    background:#1769aa;
+    color:white;
+    padding:0 25px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* FILTERS */
+.filters{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    padding:30px 15px;
+    flex-wrap:wrap;
+}
+
+.filter-btn{
+    border:0;
+    background:#ddd;
+    padding:11px 22px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.filter-btn.active{
+    background:#1769aa;
+    color:white;
+}
+
+.dark .filter-btn{
+    background:#333;
+    color:white;
+}
+
+/* PROPERTIES */
+.section{
+    padding:30px 6%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.section-title h2{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.properties{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.dark .card{
+    background:#1f1f1f;
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    margin-bottom:10px;
+}
+
+.location{
+    color:#777;
+    margin-bottom:10px;
+}
+
+.dark .location{
+    color:#aaa;
+}
+
+.price{
+    color:#1769aa;
+    font-size:20px;
+    font-weight:bold;
+    margin:10px 0 15px;
+}
+
+.card-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.details-btn{
+    flex:1;
+    border:0;
+    padding:11px;
+    border-radius:8px;
+    background:#1769aa;
+    color:white;
+    cursor:pointer;
+}
+
+.favorite-btn{
+    width:45px;
+    border:0;
+    border-radius:8px;
+    background:#eee;
+    font-size:21px;
+    cursor:pointer;
+}
+
+.favorite-btn.active{
+    color:red;
+}
+
+.dark .favorite-btn{
+    background:#333;
+}
+
+/* CONTACT */
+.contact{
+    max-width:700px;
+    margin:50px auto;
+    padding:30px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.dark .contact{
+    background:#1f1f1f;
+}
+
+.contact h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.contact input,
+.contact textarea{
+    width:100%;
+    padding:14px;
+    margin:7px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+}
+
+.contact textarea{
+    height:130px;
+    resize:none;
+}
+
+.contact button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:8px;
+    background:#1769aa;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* FOOTER */
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:50px;
+}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:520px;
+    max-height:90vh;
+    overflow:auto;
+    background:white;
+    color:#222;
+    border-radius:15px;
+    padding:25px;
+    position:relative;
+}
+
+.dark .modal-box{
+    background:#1f1f1f;
+    color:white;
+}
+
+.close{
+    position:absolute;
+    right:15px;
+    top:8px;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.property-gallery{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    margin:20px 0;
+}
+
+.property-gallery img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+/* AUTH */
+.auth-input{
+    width:100%;
+    padding:13px;
+    margin:7px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.auth-button{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    border:0;
+    border-radius:8px;
+    background:#1769aa;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.switch-auth{
+    text-align:center;
+    color:#1769aa;
+    margin-top:15px;
+    cursor:pointer;
+}
+
+#forgotPassword{
+    display:block;
+}
+
+/* WHATSAPP */
+.whatsapp{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#25D366;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:27px;
+    z-index:1500;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .properties{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    nav{
+        padding:14px 4%;
+    }
+
+    .logo{
+        font-size:16px;
+    }
+
+    .nav-btn,
+    .dark-btn{
+        padding:8px 9px;
+        font-size:11px;
+    }
+
+    .hero{
+        min-height:400px;
+    }
+
+    .hero h1{
+        font-size:34px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+    .search-box button{
+        padding:14px;
+    }
+
+    .properties{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        padding:25px 4%;
+    }
+
+    .contact{
+        margin:35px 4%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+
+    <div class="logo">
+        Mr.ahmad Real Estate
+    </div>
+
+    <div class="nav-buttons">
+
+        <span id="userDisplay" class="user-name"></span>
+
+        <button id="loginBtn"
+                class="nav-btn"
+                onclick="openAuth('login')">
+            Sign In
+        </button>
+
+        <button id="signupBtn"
+                class="nav-btn"
+                onclick="openAuth('signup')">
+            Create Account
+        </button>
+
+        <button id="logoutBtn"
+                class="nav-btn"
+                onclick="logout()"
+                style="display:none;">
+            Logout
+        </button>
+
+        <button class="dark-btn"
+                onclick="toggleDarkMode()">
+            🌙
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Find Your Dream Home</h1>
+
+        <p>
+            Discover beautiful properties for sale and rent.
+        </p>
+
+        <div class="search-box">
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search by city or property..."
+                oninput="displayProperties()"
+            >
+
+            <button onclick="displayProperties()">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FILTERS -->
+<div class="filters">
+
+    <button
+        class="filter-btn active"
+        onclick="filterProperties('all',this)">
+        All
+    </button>
+
+    <button
+        class="filter-btn"
+        onclick="filterProperties('sale',this)">
+        For Sale
+    </button>
+
+    <button
+        class="filter-btn"
+        onclick="filterProperties('rent',this)">
+        For Rent
+    </button>
+
+</div>
+
+
+<!-- PROPERTIES -->
+<section class="section">
+
+    <div class="section-title">
+        <h2>Featured Properties</h2>
+        <p>Choose your next home.</p>
+    </div>
+
+    <div
+        id="propertiesContainer"
+        class="properties">
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+<section class="contact">
+
+    <h2>Contact Us</h2>
+
+    <form
+        action="https://formspree.io/f/mvkoqaby"
+        method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            required
+        >
+
+        <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            required
+        >
+
+        <input
+            type="text"
+            name="location"
+            placeholder="Location / Address"
+            required
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Your Gmail / Email"
+            required
+        >
+
+        <textarea
+            name="message"
+            placeholder="Your Message"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Send Message 📩
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+    © 2026 Mr.ahmad Real Estate
+    <br><br>
+    All Rights Reserved.
+</footer>
+
+
+<!-- WHATSAPP -->
+<a
+    class="whatsapp"
+    href="https://wa.me/212600000000"
+    target="_blank">
+    ☎
+</a>
+
+
+<!-- PROPERTY MODAL -->
+<div id="propertyModal" class="modal">
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closePropertyModal()">
+            ×
+        </span>
+
+        <div id="propertyDetails"></div>
+
+    </div>
+
+</div>
+
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeAuth()">
+            ×
+        </span>
+
+        <h2 id="authTitle">
+            Sign In
+        </h2>
+
+        <div id="signupNameContainer"
+             style="display:none;">
+
+            <input
+                id="fullName"
+                class="auth-input"
+                type="text"
+                placeholder="Full Name"
+            >
+
+        </div>
+
+        <input
+            id="authEmail"
+            class="auth-input"
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            id="authPassword"
+            class="auth-input"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            id="authSubmit"
+            class="auth-button"
+            onclick="handleAuth()">
+            Sign In
+        </button>
+
+        <div
+            id="switchAuth"
+            class="switch-auth"
+            onclick="switchAuthMode()">
+            Don't have an account? Create one
+        </div>
+
+        <div
+            id="forgotPassword"
+            class="switch-auth"
+            onclick="forgotPassword()">
+            Forgot password?
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"PUT_YOUR_SUPABASE_PROJECT_URL_HERE";
+
+const SUPABASE_KEY =
+"PUT_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+let supabaseClient = null;
+
+if(
+    SUPABASE_URL !==
+    "PUT_YOUR_SUPABASE_PROJECT_URL_HERE"
+    &&
+    SUPABASE_KEY !==
+    "PUT_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE"
+){
+
+    supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+}
+
+
+/* =========================================
+   PROPERTIES
+========================================= */
+
+const properties = [
+
+{
+    id:1,
+    type:"sale",
+    title:"Luxury Villa",
+    city:"Casablanca",
+    price:"3,500,000 MAD",
+
+    description:
+    "Beautiful modern villa with a large garden, swimming pool and spacious rooms.",
+
+    images:[
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=80"
+    ]
+},
+
+{
+    id:2,
+    type:"rent",
+    title:"Modern Apartment",
+    city:"Rabat",
+    price:"9,000 MAD / month",
+
+    description:
+    "Modern apartment in a great location near shops, restaurants and transport.",
+
+    images:[
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80"
+    ]
+},
+
+{
+    id:3,
+    type:"sale",
+    title:"Beach House",
+    city:"Tangier",
+    price:"2,200,000 MAD",
+
+    description:
+    "Amazing beach house with sea views and a relaxing modern interior.",
+
+    images:[
+        "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80"
+    ]
+}
+
+];
+
+
+let currentFilter = "all";
+
+let favorites =
+JSON.parse(
+    localStorage.getItem("mrAhmadFavorites")
+) || [];
+
+
+/* =========================================
+   DISPLAY
+========================================= */
+
+function displayProperties(){
+
+    const container =
+        document.getElementById(
+            "propertiesContainer"
+        );
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+    container.innerHTML = "";
+
+    const filtered =
+        properties.filter(property => {
+
+            const filterOK =
+                currentFilter === "all" ||
+                property.type === currentFilter;
+
+            const searchOK =
+                property.title
+                    .toLowerCase()
+                    .includes(search)
+                ||
+                property.city
+                    .toLowerCase()
+                    .includes(search);
+
+            return filterOK && searchOK;
+
+        });
+
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+            <p style="
+                text-align:center;
+                grid-column:1/-1;
+            ">
+                No properties found.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    filtered.forEach(property => {
+
+        const favorite =
+            favorites.includes(property.id);
+
+        container.innerHTML += `
+
+        <div class="card">
+
+            <img
+                src="${property.images[0]}"
+                alt="${property.title}"
+            >
+
+            <div class="card-content">
+
+                <h3>
+                    ${property.title}
+                </h3>
+
+                <div class="location">
+                    📍 ${property.city}
+                </div>
+
+                <div class="price">
+                    ${property.price}
+                </div>
+
+                <div class="card-buttons">
+
+                    <button
+                        class="details-btn"
+                        onclick="showProperty(${property.id})">
+                        View Details
+                    </button>
+
+                    <button
+                        class="favorite-btn ${favorite ? "active":""}"
+                        onclick="toggleFavorite(${property.id})">
+                        ${favorite ? "❤️":"♡"}
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================
+   FILTER
+========================================= */
+
+function filterProperties(type,button){
+
+    currentFilter = type;
+
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    displayProperties();
+
+}
+
+
+/* =========================================
+   PROPERTY DETAILS
+========================================= */
+
+function showProperty(id){
+
+    const property =
+        properties.find(
+            p => p.id === id
+        );
+
+    if(!property) return;
+
+
+    const gallery =
+        property.images
+        .map(image => `
+            <img src="${image}">
+        `)
+        .join("");
+
+
+    document.getElementById(
+        "propertyDetails"
+    ).innerHTML = `
+
+        <h2>
+            ${property.title}
+        </h2>
+
+        <div class="property-gallery">
+            ${gallery}
+        </div>
+
+        <h3>
+            📍 ${property.city}
+        </h3>
+
+        <div class="price">
+            ${property.price}
+        </div>
+
+        <p style="margin:15px 0;">
+            ${property.description}
+        </p>
+
+        <button
+            class="auth-button"
+            onclick="contactProperty('${property.title}')">
+            Contact About This Property
+        </button>
+
+    `;
+
+
+    document
+        .getElementById("propertyModal")
+        .classList.add("show");
+
+}
+
+
+function closePropertyModal(){
+
+    document
+        .getElementById("propertyModal")
+        .classList.remove("show");
+
+}
+
+
+function contactProperty(title){
+
+    closePropertyModal();
+
+    document
+        .querySelector(".contact")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+    document.querySelector(
+        'textarea[name="message"]'
+    ).value =
+        "I am interested in: " + title;
+
+}
+
+
+/* =========================================
+   FAVORITES
+========================================= */
+
+function toggleFavorite(id){
+
+    if(favorites.includes(id)){
+
+        favorites =
+            favorites.filter(
+                item => item !== id
+            );
+
+    }else{
+
+        favorites.push(id);
+
+    }
+
+    localStorage.setItem(
+        "mrAhmadFavorites",
+        JSON.stringify(favorites)
+    );
+
+    displayProperties();
+
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+function toggleDarkMode(){
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "darkMode",
+        document.body.classList.contains("dark")
+    );
+
+}
+
+
+/* =========================================
+   AUTH
+========================================= */
+
+let currentAuthMode = "login";
+
+
+function openAuth(mode){
+
+    currentAuthMode = mode;
+
+    updateAuthUI();
+
+    document
+        .getElementById("authModal")
+        .classList.add("show");
+
+}
+
+
+function closeAuth(){
+
+    document
+        .getElementById("authModal")
+        .classList.remove("show");
+
+}
+
+
+function switchAuthMode(){
+
+    currentAuthMode =
+        currentAuthMode === "login"
+        ? "signup"
+        : "login";
+
+    updateAuthUI();
+
+}
+
+
+function updateAuthUI(){
+
+    const title =
+        document.getElementById("authTitle");
+
+    const name =
+        document.getElementById(
+            "signupNameContainer"
+        );
+
+    const submit =
+        document.getElementById("authSubmit");
+
+    const switchButton =
+        document.getElementById("switchAuth");
+
+    const forgot =
+        document.getElementById(
+            "forgotPassword"
+        );
+
+
+    if(currentAuthMode === "login"){
+
+        title.innerText = "Sign In";
+
+        name.style.display = "none";
+
+        submit.innerText = "Sign In";
+
+        switchButton.innerText =
+            "Don't have an account? Create one";
+
+        forgot.style.display = "block";
+
+    }else{
+
+        title.innerText =
+            "Create Account";
+
+        name.style.display = "block";
+
+        submit.innerText =
+            "Create Account";
+
+        switchButton.innerText =
+            "Already have an account? Sign In";
+
+        forgot.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================
+   SIGN UP / SIGN IN
+========================================= */
+
+async function handleAuth(){
+
+    if(!supabaseClient){
+
+        alert(
+            "⚠️ Add your Supabase URL and Publishable Key first."
+        );
+
+        return;
+    }
+
+
+    const email =
+        document.getElementById(
+            "authEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "authPassword"
+        ).value;
+
+    const fullName =
+        document.getElementById(
+            "fullName"
+        ).value.trim();
+
+
+    if(!email || !password){
+
+        alert(
+            "Please enter your email and password."
+        );
+
+        return;
+    }
+
+
+    if(currentAuthMode === "signup"){
+
+        if(!fullName){
+
+            alert(
+                "Please enter your full name."
+            );
+
+            return;
+        }
+
+
+        const {error} =
+            await supabaseClient.auth.signUp({
+
+                email:email,
+
+                password:password,
+
+                options:{
+                    data:{
+                        full_name:fullName
+                    }
+                }
+
+            });
+
+
+        if(error){
+
+            alert("❌ " + error.message);
+
+            return;
+        }
+
+
+        alert(
+            "✅ Account created!\n\n" +
+            "Check your email if confirmation is required."
+        );
+
+        closeAuth();
+
+    }else{
+
+        const {error} =
+            await supabaseClient.auth
+            .signInWithPassword({
+
+                email:email,
+
+                password:password
+
+            });
+
+
+        if(error){
+
+            alert("❌ " + error.message);
+
+            return;
+        }
+
+
+        alert("✅ Welcome back!");
+
+        closeAuth();
+
+    }
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout(){
+
+    if(!supabaseClient) return;
+
+    const {error} =
+        await supabaseClient.auth.signOut();
+
+
+    if(error){
+
+        alert("❌ " + error.message);
+
+        return;
+    }
+
+
+    updateUserUI(null);
+
+    alert("You have been logged out.");
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+async function forgotPassword(){
+
+    if(!supabaseClient){
+
+        alert(
+            "⚠️ Configure Supabase first."
+        );
+
+        return;
+    }
+
+
+    const email =
+        document.getElementById(
+            "authEmail"
+        ).value.trim();
+
+
+    if(!email){
+
+        alert(
+            "Enter your email first."
+        );
+
+        return;
+    }
+
+
+    const {error} =
+        await supabaseClient.auth
+        .resetPasswordForEmail(
+            email,
+            {
+                redirectTo:
+                window.location.href
+            }
+        );
+
+
+    if(error){
+
+        alert("❌ " + error.message);
+
+        return;
+    }
+
+
+    alert(
+        "📩 Password reset email sent!"
+    );
+
+}
+
+
+/* =========================================
+   USER UI
+========================================= */
+
+function updateUserUI(user){
+
+    const display =
+        document.getElementById(
+            "userDisplay"
+        );
+
+    const login =
+        document.getElementById(
+            "loginBtn"
+        );
+
+    const signup =
+        document.getElementById(
+            "signupBtn"
+        );
+
+    const logout =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+
+    if(user){
+
+        const name =
+            user.user_metadata?.full_name
+            ||
+            user.email.split("@")[0];
+
+        display.innerText =
+            "👤 " + name;
+
+        login.style.display = "none";
+
+        signup.style.display = "none";
+
+        logout.style.display = "block";
+
+    }else{
+
+        display.innerText = "";
+
+        login.style.display = "block";
+
+        signup.style.display = "block";
+
+        logout.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================
+   CHECK USER
+========================================= */
+
+async function checkUser(){
+
+    if(!supabaseClient){
+
+        updateUserUI(null);
+
+        return;
+    }
+
+
+    const {
+        data:{
+            user
+        }
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    updateUserUI(user);
+
+}
+
+
+if(supabaseClient){
+
+    supabaseClient.auth
+        .onAuthStateChange(
+            (event,session) => {
+
+                updateUserUI(
+                    session
+                    ? session.user
+                    : null
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+if(
+    localStorage.getItem("darkMode")
+    ===
+    "true"
+){
+
+    document.body.classList.add("dark");
+
+}
+
+displayProperties();
+
+checkUser();
+
+
+/* =========================================
+   CLOSE MODALS
+========================================= */
+
+window.addEventListener(
+    "click",
+    function(event){
+
+        const propertyModal =
+            document.getElementById(
+                "propertyModal"
+            );
+
+        const authModal =
+            document.getElementById(
+                "authModal"
+            );
+
+
+        if(event.target === propertyModal){
+
+            closePropertyModal();
+
+        }
+
+
+        if(event.target === authModal){
+
+            closeAuth();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
